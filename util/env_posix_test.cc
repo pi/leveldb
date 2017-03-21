@@ -1,7 +1,11 @@
 // Copyright (c) 2011 The LevelDB Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file. See the AUTHORS file for names of contributors.
-
+#ifdef LEVELDB_PLATFORM_WINDOWS
+int main(int argc, char **argv) {
+    return 0;
+}
+#else
 #include "leveldb/env.h"
 
 #include "port/port.h"
@@ -64,3 +68,4 @@ int main(int argc, char** argv) {
                                        leveldb::kMMapLimit);
   return leveldb::test::RunAllTests();
 }
+#endif /* LEVELDB_PLATFORM_WINDOWS */

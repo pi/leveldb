@@ -154,6 +154,10 @@ unsigned char FilterKeyMatch(
   return fake_filter_result;
 }
 
+#ifdef OS_WINDOWS
+#define geteuid() 1
+#endif
+
 int main(int argc, char** argv) {
   leveldb_t* db;
   leveldb_comparator_t* cmp;
