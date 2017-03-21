@@ -161,7 +161,7 @@ case "$TARGET_OS" in
         ;;
     OS_WINDOWS_CROSSCOMPILE | NATIVE_WINDOWS | MINGW*)
         PLATFORM=OS_WINDOWS
-        COMMON_FLAGS="-fno-builtin-memcmp -D_REENTRANT -DOS_WINDOWS -DLEVELDB_PLATFORM_WINDOWS -DLEVELDB_PLATORM_POSIX_SSE -DWINVER=0x0600 -D__USE_MINGW_ANSI_STDIO=1 -msse4.2"
+        COMMON_FLAGS="-fno-builtin-memcmp -D_REENTRANT -DOS_WINDOWS -DLEVELDB_PLATFORM_WINDOWS -DLEVELDB_PLATORM_POSIX_SSE -DWINVER=0x0600 -D__USE_MINGW_ANSI_STDIO=1 -msse4.2 -DSNAPPY -I snappy"
         PLATFORM_SOURCES="util/env_win.cc"
         PLATFORM_LIBS="-lshlwapi"
         PORT_FILE=port/port_win.cc
@@ -177,7 +177,7 @@ esac
 # except for the test and benchmark files. By default, find will output a list
 # of all files matching either rule, so we need to append -print to make the
 # prune take effect.
-DIRS="$PREFIX/db $PREFIX/util $PREFIX/table"
+DIRS="$PREFIX/db $PREFIX/util $PREFIX/table $PREFIX/snappy"
 
 set -f # temporarily disable globbing so that our patterns aren't expanded
 PRUNE_TEST="-name *test*.cc -prune"
