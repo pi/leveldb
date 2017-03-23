@@ -57,6 +57,16 @@ struct leveldb_writablefile_t { WritableFile*     rep; };
 struct leveldb_logger_t       { Logger*           rep; };
 struct leveldb_filelock_t     { FileLock*         rep; };
 
+static char *duplicate_string(const char *s)
+{
+	size_t len = strlen(s);
+	char *r = (char*)malloc(len + 1);
+	if (r) {
+		memcpy(r, s, len + 1);
+	}
+	return r;
+}
+
 struct leveldb_comparator_t : public Comparator {
   void* state_;
   void (*destructor_)(void*);
@@ -134,11 +144,11 @@ static bool SaveError(char** errptr, const Status& s) {
   if (s.ok()) {
     return false;
   } else if (*errptr == NULL) {
-    *errptr = strdup(s.ToString().c_str());
+    *errptr = duplicate_string(s.ToString().c_str());
   } else {
     // TODO(sanjay): Merge with existing error?
     free(*errptr);
-    *errptr = strdup(s.ToString().c_str());
+    *errptr = duplicate_string(s.ToString().c_str());
   }
   return true;
 }
@@ -243,7 +253,7 @@ char* leveldb_property_value(
   std::string tmp;
   if (db->rep->GetProperty(Slice(propname), &tmp)) {
     // We use strdup() since we expect human readable output.
-    return strdup(tmp.c_str());
+    return duplicate_string(tmp.c_str());
   } else {
     return NULL;
   }
